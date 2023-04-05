@@ -24,9 +24,15 @@ class OrdersController extends Controller
     return response()->json(['status' => true, 'message' => 'New Order Succesfully Added !', 'data' => $data], 200);
   }
   
-  public function show(Order $product)
+  public function show($id = null)
   {
-    $data = new OrderResource($product);
+    if ($id) {
+      $product = Order::findOrFail($id);
+      $data = new OrderResource($product);
+    } else {
+      $products = Order::all();
+      $data = OrderResource::collection($products);
+    }
     
     return response()->json(['status' => true, 'message' => 'Success !', 'data' => $data], 200);
     

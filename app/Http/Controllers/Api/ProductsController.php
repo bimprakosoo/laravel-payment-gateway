@@ -24,9 +24,15 @@ class ProductsController extends Controller
     return response()->json(['status' => true, 'message' => 'New Product Succesfully Added !', 'data' => $data], 200);
   }
   
-  public function show(Product $product)
+  public function show($id = null)
   {
-    $data = new ProductResource($product);
+    if ($id) {
+      $product = Product::findOrFail($id);
+      $data = new ProductResource($product);
+    } else {
+      $products = Product::all();
+      $data = ProductResource::collection($products);
+    }
   
     return response()->json(['status' => true, 'message' => 'Success !', 'data' => $data], 200);
   
