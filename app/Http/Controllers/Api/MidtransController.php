@@ -33,6 +33,7 @@ class MidtransController extends Controller
   
   public function handleWebhook(Request $request)
   {
+    try {
       // Get the order ID from the notification
       $order_id = $request->order_id;
     
@@ -48,5 +49,9 @@ class MidtransController extends Controller
     
     // Return a success response to Midtrans
     return response()->json(['status' => 'OK'], 200);
+    } catch (\Exception $e) {
+      // Handle the error and return a custom error response
+      return response()->json(['status' => 'ERROR', 'message' => $e->getMessage()], 500);
+    }
   }
 }
